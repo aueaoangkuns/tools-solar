@@ -56,7 +56,7 @@ function create_datetime(seconds, minute, hour, day, month, day_of_week){
     return seconds + " " + minute + " " + hour + " " + day + " " + month + " " + day_of_week
 }console.log("Start!!")
 
-cron.schedule('2 */30 6-19 * * *', () => {
+cron.schedule('5 */30 6-19 * * *', () => {
     writeDB();
 })
 
@@ -82,7 +82,9 @@ async function writeDB() {
                 currentTime: time
             })
         }
-        console.log(`-------------   Wait 30 min     --------------------`)
+        let date = new Date();
+        console.log("------------ "+date.toLocaleString()+" -----------------");
+        console.log(`---------------   Wait 30 min     ------------------`)
 
     }
     catch (e) {

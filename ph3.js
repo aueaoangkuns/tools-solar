@@ -82,7 +82,9 @@ async function writeDB() {
                 currentTime: time
             })
         }
-        console.log(`-------------   Wait 30 min     --------------------`)
+        let date = new Date();
+        console.log("------------ "+date.toLocaleString()+" -----------------");
+        console.log(`---------------   Wait 30 min     ------------------`)
 
     }
     catch (e) {
