@@ -1,20 +1,23 @@
-// Connect Database
+
 let knex = require('knex')({
     client: 'mssql',
     connection: {
         server : '10.28.99.42',
         user : 'aueaoangkun_s',
         password : '0822914530aA',
-        database : 'NPS_SOLAR'
+        database : 'NPS_SOLAR',
+        options: {
+            trustedConnection: true
+        }
     }
 });
 
-// config ค่าเพื่อเข้า HTTP API Huawei
+
 const axios = require('axios');
 require('dotenv').config()
 const baseUrl = 'https://intl.fusionsolar.huawei.com/thirdData/'
 
-// ส่วนของ Login
+
 async function hwLogin() {
     const data = {
         userName: process.env.USER_NAME,
@@ -30,7 +33,7 @@ async function hwLogin() {
         throw (e.message)
     }
 }
-// ส่วนของการใช้งาน get function
+
 async function getDeviceData(DeviceCode,DevIdType){
     try {
         const token = await hwLogin();
@@ -76,10 +79,11 @@ async function writeDB() {
 
             const sql = `PH4 No.${i + 1} (${devID},${ActivePower},${time})`
             console.log(sql)
-            await knex('Ph4_Dv').insert({
-                devId: devID,
-                active_power: ActivePower,
-                currentTime: time
+            await knex('RT_Dv').insert({
+                PowerHouse : 'PowerHouse4',
+                devID: devID,
+                ActivePower: ActivePower,
+                CurrentTime: time
             })
         }
         let date = new Date();
