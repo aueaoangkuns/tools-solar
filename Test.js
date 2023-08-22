@@ -1,20 +1,23 @@
-// Connect Database
+
 let knex = require('knex')({
     client: 'mssql',
     connection: {
         server : '10.28.99.42',
         user : 'aueaoangkun_s',
         password : '0822914530aA',
-        database : 'NPS_SOLAR'
+        database : 'NPS_SOLAR',
+        options: {
+            trustedConnection: true
+        }
     }
 });
 
-// config ค่าเพื่อเข้า HTTP API Huawei
+
 const axios = require('axios');
 require('dotenv').config()
 const baseUrl = 'https://intl.fusionsolar.huawei.com/thirdData/'
 
-// ส่วนของ Login
+
 async function hwLogin() {
     const data = {
         userName: process.env.USER_NAME,
@@ -30,8 +33,8 @@ async function hwLogin() {
         throw (e.message)
     }
 }
-// ส่วนของการใช้งาน get function
-async function getDeviceData(DeviceCode,DevIdType,Starttime,Endtime){
+
+async function getDeviceData(DeviceCode,DevIdType,StartTime,EndTime){
     try {
         const token = await hwLogin();
         const config = {
@@ -40,7 +43,7 @@ async function getDeviceData(DeviceCode,DevIdType,Starttime,Endtime){
             }
         };
         const data = {
-            devIds : DeviceCode , devTypeId : DevIdType , startTime : Starttime , endTime : Endtime
+            devIds : DeviceCode , devTypeId : DevIdType , startTime : StartTime , endTime : EndTime
         }
         const response = await axios.post(baseUrl + 'getDevHistoryKpi', data, config)
         return response.data
@@ -56,32 +59,32 @@ function create_datetime(seconds, minute, hour, day, month, day_of_week){
     return seconds + " " + minute + " " + hour + " " + day + " " + month + " " + day_of_week
 }console.log("Start!!")
 
-cron.schedule('50 * * * * *', () => {
+cron.schedule('30 * * * * *', () => {
     writeDB();
 })
 
 async function writeDB() {
     try {
-        const response = await getDeviceData('1000000033980923',1 ,1690844400000 ,1690891200000)
+        const response = await getDeviceData('1000000033980685,1000000033980684,1000000033980683,1000000033980674,1000000033980673,1000000033980672,1000000033980671,1000000033980670,1000000033980669',1,1692658800000,1692664200000)
         const obj = response
 
-        for (i = 0; i <= 156 ; i++) {
+        for (i = 0; i <=2000 ; i++) {
             const obj2 = response.data[i]
-            const time = obj2.collectTime
-            const dataItemMap = obj2.dataItemMap
             const devID = obj2.devId
+            const time = obj2.collectTime
+
+            const dataItemMap = obj2.dataItemMap
             const ActivePower = dataItemMap['active_power']
 
 
-            const sql = `PH3 No.${i+1} (${devID},${ActivePower},${time})`
+            const sql = `PH4 No.${i + 1} (${devID},${ActivePower},${time})`
             console.log(sql)
             await knex('RT_Dv').insert({
-                PowerHouse : 'PowerHouse3',
-                DevID: devID,
+                PowerHouse : 'PowerHouse4',
+                devID: devID,
                 ActivePower: ActivePower,
                 CurrentTime: time
             })
-            
         }
         let date = new Date();
         console.log("------------ "+date.toLocaleString()+" -----------------");
