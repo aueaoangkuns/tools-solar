@@ -54,21 +54,21 @@ async function getDeviceData(DeviceCode,DevIdType,StartTime,EndTime){
     }
 }
 
-const cron = require("node-cron")
-function create_datetime(seconds, minute, hour, day, month, day_of_week){
-    return seconds + " " + minute + " " + hour + " " + day + " " + month + " " + day_of_week
-}console.log("Start!!")
+// const cron = require("node-cron")
+// function create_datetime(seconds, minute, hour, day, month, day_of_week){
+//     return seconds + " " + minute + " " + hour + " " + day + " " + month + " " + day_of_week
+// }console.log("Start!!")
 
-cron.schedule('30 * * * * *', () => {
-    writeDB();
-})
+// cron.schedule(' * * * * *', () => {
+//     writeDB();
+// })
 
 async function writeDB() {
     try {
-        const response = await getDeviceData('1000000033980685,1000000033980684,1000000033980683,1000000033980674,1000000033980673,1000000033980672,1000000033980671,1000000033980670,1000000033980669',1,1692658800000,1692664200000)
+        const response = await getDeviceData('1000000033980722,1000000033980721,1000000033980720,1000000033980719,1000000033980718,1000000033980717,1000000033980728,1000000033980727,1000000033980726,1000000033980725',1,1690844400000,1691064000000)
         const obj = response
 
-        for (i = 0; i <=2000 ; i++) {
+        for (i = 0; i < response.data.length ; i++ ) {
             const obj2 = response.data[i]
             const devID = obj2.devId
             const time = obj2.collectTime
@@ -76,14 +76,20 @@ async function writeDB() {
             const dataItemMap = obj2.dataItemMap
             const ActivePower = dataItemMap['active_power']
 
-
-            const sql = `PH4 No.${i + 1} (${devID},${ActivePower},${time})`
+            const milliseconds = parseInt(time, 10)
+            const dateTime = new Date(milliseconds)
+            const minute = dateTime.getMinutes()
+            const minuteStr = minute.toString()
+            const sql = `PH4 No.${i+ 1}\t${dateTime.toLocaleString()}\t${devID}\t${ActivePower}\t${time}`
+            
             console.log(sql)
-            await knex('RT_Dv').insert({
+            await knex('Ph_Dv').insert({
                 PowerHouse : 'PowerHouse4',
-                devID: devID,
+                DateTime : dateTime,
+                CodeTime : minuteStr,
+                DeviceId: devID,
                 ActivePower: ActivePower,
-                CurrentTime: time
+                CodeCurrentTime: time
             })
         }
         let date = new Date();
@@ -94,4 +100,4 @@ async function writeDB() {
     catch (e) {
         console.log('Error', e.message)
     }
-}
+}writeDB()
