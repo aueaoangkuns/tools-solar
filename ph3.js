@@ -68,7 +68,7 @@ async function writeDB() {
         const response = await getDeviceData('1000000033980918,1000000033980917,1000000033980916,1000000033980915,1000000033980914,1000000033980913,1000000033980912,1000000033980911,1000000033980919,1000000033980902,1000000033981392,1000000033980910,1000000033980909,1000000033980908,1000000033980907,1000000033980906,1000000033980905,1000000033980904,1000000033980903,1000000033980556,1000000033980539,1000000033980547,1000000033980546,1000000033980545,1000000033980544,1000000033980543,1000000033980542,1000000033980570,1000000033980541,1000000033980540,1000000033980555,1000000033980554,1000000033980553,1000000033980552,1000000033980551,1000000033980550,1000000033980549,1000000033980548,1000000033980925,1000000033980924,1000000033980923,1000000034063745,1000000033980922,1000000033980921,1000000033980933,1000000033980932,1000000033980931,1000000033980930,1000000033980929,1000000033980928,1000000033980927,1000000033980926,1000000033980939,1000000033980938,1000000033980937,1000000033980936,1000000033980935,1000000033980934', '1')
         const obj = response
 
-        for (i = 0; i <= 57; i++) {
+        for (i = 0; i < response.data.length ; i++) {
             const obj2 = response.data[i]
             const time = obj.params['currentTime']
 
@@ -76,14 +76,20 @@ async function writeDB() {
             const devID = obj2.devId
             const ActivePower = dataItemMap['active_power']
 
-
-            const sql = `PH3 No.${i + 1} (${devID},${ActivePower},${time})`
+            const milliseconds = parseInt(time, 10)
+            const dateTime = new Date(milliseconds)
+            const minute = dateTime.getMinutes()
+            const minuteStr = minute.toString()
+            const sql = `PH4 No.${i+ 1}\t${dateTime.toLocaleString()}\t${devID}\t${ActivePower}\t\t${time}`
+            
             console.log(sql)
-            await knex('RT_Dv').insert({
+            await knex('Test_6').insert({
                 PowerHouse : 'PowerHouse3',
-                devID: devID,
+                DateTime : dateTime,
+                CodeTime : minuteStr,
+                DeviceId: devID,
                 ActivePower: ActivePower,
-                CurrentTime: time
+                CodeCurrentTime: time
             })
         }
         let date = new Date();

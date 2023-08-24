@@ -1,14 +1,10 @@
-
 let knex = require('knex')({
     client: 'mssql',
     connection: {
         server : '10.28.99.42',
         user : 'aueaoangkun_s',
         password : '0822914530aA',
-        database : 'NPS_SOLAR',
-        options: {
-            trustedConnection: true
-        }
+        database : 'NPS_SOLAR'
     }
 });
 
@@ -65,7 +61,7 @@ async function getDeviceData(DeviceCode,DevIdType,StartTime,EndTime){
 
 async function writeDB() {
     try {
-        const response = await getDeviceData('1000000033980722,1000000033980721,1000000033980720,1000000033980719,1000000033980718,1000000033980717,1000000033980728,1000000033980727,1000000033980726,1000000033980725',1,1690844400000,1691064000000)
+        const response = await getDeviceData('1000000033980923,1000000034063745,1000000033980922,1000000033980921,1000000033980933,1000000033980932,1000000033980931,1000000033980930,1000000033980929,1000000033980928',1,1691622000000,1691841600000)
         const obj = response
 
         for (i = 0; i < response.data.length ; i++ ) {
@@ -84,7 +80,7 @@ async function writeDB() {
             
             console.log(sql)
             await knex('Ph_Dv').insert({
-                PowerHouse : 'PowerHouse4',
+                PowerHouse : 'PowerHouse3',
                 DateTime : dateTime,
                 CodeTime : minuteStr,
                 DeviceId: devID,
