@@ -61,7 +61,7 @@ async function getDeviceData(DeviceCode,DevIdType,StartTime,EndTime){
 
 async function writeDB() {
     try {
-        const response = await getDeviceData('1000000033980868,1000000033980867,1000000033980866,1000000033980865,1000000033980864,1000000033980863,1000000033980871,1000000033980854,1000000033980853,1000000033980682',1,1692918000000,1693137600000)
+        const response = await getDeviceData('1000000033980918,1000000033980917,1000000033980916,1000000033980915,1000000033980914,1000000033980913,1000000033980912,1000000033980911,1000000033980919,1000000033980902',1,1691362800000,1691582400000)
         const obj = response
 
         for (i = 0; i < response.data.length ; i++ ) {
@@ -80,7 +80,7 @@ async function writeDB() {
             
             console.log(sql)
             await knex('Ph_Dv').insert({
-                PowerHouse : 'PowerHouse4',
+                PowerHouse : 'PowerHouse3',
                 DateTime : dateTime,
                 CodeTime : minuteStr,
                 DeviceId: devID,
