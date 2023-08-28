@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: 'tool-solar',
+        name: 'tool-solar-Ph3',
         script: './ph3.js',
         watch: false,
         env: {

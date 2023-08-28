@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: 'tool-solar',
+        name: 'tool-solar-Ph4',
         script: './ph4.js',
         watch: false,
         env: {
