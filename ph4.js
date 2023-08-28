@@ -2,16 +2,12 @@
 let knex = require('knex')({
     client: 'mssql',
     connection: {
-        server : 'DESKTOP-9PESU7N',
-        user : 'sroiaudom',
+        server : '10.28.99.42',
+        user : 'aueaoangkun_s',
         password : '0822914530aA',
-        database : 'Test',
-        options: {
-            trustedConnection: true
-        }
+        database : 'NPS_SOLAR',
     }
 });
-
 
 const axios = require('axios');
 require('dotenv').config()
@@ -83,7 +79,7 @@ async function writeDB() {
             const sql = `PH4 No.${i+ 1}\t${dateTime.toLocaleString()}\t${devID}\t${ActivePower}\t\t${time}`
             
             console.log(sql)
-            await knex('Test_6').insert({
+            await knex('Ph_Dv').insert({
                 PowerHouse : 'PowerHouse4',
                 DateTime : dateTime,
                 CodeTime : minuteStr,

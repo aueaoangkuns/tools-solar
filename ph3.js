@@ -6,9 +6,6 @@ let knex = require('knex')({
         user : 'aueaoangkun_s',
         password : '0822914530aA',
         database : 'NPS_SOLAR',
-        options: {
-            trustedConnection: true
-        }
     }
 });
 
@@ -59,7 +56,7 @@ function create_datetime(seconds, minute, hour, day, month, day_of_week){
     return seconds + " " + minute + " " + hour + " " + day + " " + month + " " + day_of_week
 }console.log("Start!!")
 
-cron.schedule('2 */30 6-19 * * *', () => {
+cron.schedule('4 */30 6-19 * * *', () => {
     writeDB();
 })
 
@@ -83,7 +80,7 @@ async function writeDB() {
             const sql = `PH4 No.${i+ 1}\t${dateTime.toLocaleString()}\t${devID}\t${ActivePower}\t\t${time}`
             
             console.log(sql)
-            await knex('Test_6').insert({
+            await knex('Ph_Dv').insert({
                 PowerHouse : 'PowerHouse3',
                 DateTime : dateTime,
                 CodeTime : minuteStr,
