@@ -77,7 +77,7 @@ async function writeDB() {
             const dateTime = new Date(milliseconds)
             const minute = dateTime.getMinutes()
             const minuteStr = minute.toString()
-            const sql = `PH4 No.${i+ 1}\t${dateTime.toLocaleString()}\t${devID}\t${ActivePower}\t\t${time}`
+            const sql = `PH3 No.${i+ 1}\t${dateTime.toLocaleString()}\t${devID}\t${ActivePower}\t\t${time}`
             
             console.log(sql)
             await knex('Ph_Dv').insert({
