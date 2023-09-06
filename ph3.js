@@ -1,4 +1,3 @@
-
 let knex = require('knex')({
     client: 'mssql',
     connection: {
@@ -8,7 +7,6 @@ let knex = require('knex')({
         database : 'NPS_SOLAR',
     }
 });
-
 
 const axios = require('axios');
 require('dotenv').config()

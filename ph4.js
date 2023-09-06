@@ -1,4 +1,3 @@
-
 let knex = require('knex')({
     client: 'mssql',
     connection: {
